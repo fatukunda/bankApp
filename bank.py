@@ -7,15 +7,18 @@ class Bank:
         account = Account(accountNumber)
         account.client.firstName = firstName
         account.client.lastName = lastName
-        account.client.accounts.append(account)
-        newAccount = { "Account Number": accountNumber, "First Name": firstName, "Last Name": lastName, "Balance": account.balance}
+        newAccount = {accountNumber: {
+            'First Name': firstName,
+            'Last Name' : lastName,
+            'Balance ' : account.balance
+        }}
+        account.client.accounts.append(newAccount)
         self.allAccounts.append(newAccount)
 # Print all the accounts in the bank
     def displayAllAccounts(self):
          print('Accounts in the Bank')
          print('-------------------------------------')
          print('%d accounts found' % (len(self.allAccounts)))
-         print(self.allAccounts)
          for account in self.allAccounts:
             print('-------------------------------------')
             for key in account:
@@ -24,27 +27,17 @@ class Bank:
     def searchAccount(self, accountNumber):
         for account in self.allAccounts:
             for clientAccount in account:
-                if account[clientAccount] == accountNumber:
-                     print('Account number %d details ' % (accountNumber))
-                     print('--------------------------------')
-                     print('%s: %s' % (clientAccount, account[clientAccount]))
-                     print('First Name: %s' % (account['First Name']))
-                     print('Last Name: %s' % (account['Last Name']))
-                     print('Balance: %d' % (account['Balance']))
-# deposit money
-    def deposit(self, accountNumber, amount):
-        for account in self.allAccounts:
-            for clientAccount in account:
-                if account[clientAccount] == accountNumber:
-                    account['Balance'] += amount
+                if clientAccount == accountNumber:
+                    print('Account number %d details ' % (accountNumber))
+                    print('----------------------------------------')
+                    for accountDetail in account[clientAccount]:
+                        print('%s: %s' % (accountDetail, account[clientAccount][accountDetail]))
+
 
 myBank = Bank()
 myBank.createAccount(444444444, 'Frank', 'Atukunda')
 myBank.createAccount(555555555, 'Simon', 'Lee')
 #myBank.displayAllAccounts()
 myBank.searchAccount(555555555)
-myBank.deposit(555555555, 500)
-myBank.searchAccount(555555555)
-myBank.deposit(555555555, 500)
-myBank.searchAccount(555555555)
+
 
